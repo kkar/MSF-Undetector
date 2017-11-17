@@ -17,10 +17,10 @@ decoded = base64.decodestring(firstbase64)
 def Obfuscate(body):
 	obfuscated = "" #We start with an empty string
 	for i in range(0, len(body)): #For each character in 'body'
-			if obfuscated == "": #If this is the first one
-					obfuscated += expr(ord(body[i])) #Append this
-			else: #Else if it's not the first one
-					obfuscated += "+" + expr(ord(body[i])) #Append this (with a '+')
+		if obfuscated == "": #If this is the first one
+				obfuscated += expr(ord(body[i])) #Append this
+		else: #Else if it's not the first one
+				obfuscated += "+" + expr(ord(body[i])) #Append this (with a '+')
 	return obfuscated #Return the result
 
 def expr(char):
@@ -28,11 +28,11 @@ def expr(char):
 	exp = random.randrange(0,3) #We roll the dice
 
 	if exp == 0:
-			return "chr(" + str((range+char)) + "-" + str(range) + ")"
+		return "chr(" + str((range+char)) + "-" + str(range) + ")"
 	elif exp == 1:
-			return "chr(" + str((char-range)) + "+" + str(range) + ")"
+		return "chr(" + str((char-range)) + "+" + str(range) + ")"
 	elif exp == 2:
-			return "chr(" + str((char*range)) + "/" + str(range) + ")"
+		return "chr(" + str((char*range)) + "/" + str(range) + ")"
 
 #Storing the obfuscated python code to a variable and encoding it back to base64 to another
 obfuscated_result = "exec("+Obfuscate(decoded)+")"
