@@ -1,8 +1,8 @@
 # MSF-Undetector
-Metasploit python-payload obfuscation, to allow penetration testers bypass Antivirus solutions.
+Metasploit python-payload obfuscation, to allow penetration testers bypass Antivirus solutions. Use PyInstaller to create the final, single-file binary.
 
 # Requirements
-Linux OS, with metasploit installed
+Linux OS, with metasploit installed. May work as expected on Windows, but not tested for now.
 
 # Example
 ```
