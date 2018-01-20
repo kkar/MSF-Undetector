@@ -42,7 +42,7 @@ encoded = base64.encodestring(obfuscated_result)
 output = open('output.py', "w")
 
 #Writing the obfuscated version to the result script file
-output.write("import base64,sys;exec(base64.b64decode({2:str,3:lambda b:bytes(b,'UTF-8')}[sys.version_info[0]]('" + encoded.replace('\$
+output.write("import base64,sys;exec(base64.b64decode({2:str,3:lambda b:bytes(b,'UTF-8')}[sys.version_info[0]]('" + encoded.replace('\n', '').replace('\r', '') + "')))")
 
 print "Done! Run msfconsole with the following commands."
 print "-" * 20
