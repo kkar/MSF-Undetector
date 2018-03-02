@@ -4,6 +4,12 @@ Metasploit python-payload obfuscation, to allow penetration testers bypass Antiv
 # Requirements
 Metasploit framework. May work as expected on Windows, but not tested for now.
 
+# Payload support
+Currently, only python payloads are supported.
+
+# Windows targets supported?
+Use PyInstaller, py2exe or any tool of your choice to create a single executable.
+
 # Help
 ```
 =============================================
